@@ -18,9 +18,7 @@ namespace Repository.repository
         }
 
         public async Task<Person> Add(Person model)
-        {
-            if (model.Id == null || model.Id.Equals(Guid.Empty))
-                model.Id = Guid.NewGuid();
+        {            
             var entities = await this._database.GetPersonEnitites();
             if (entities.Count(m => m.Id.Equals(model.Id)) > 0)
             {
@@ -33,10 +31,10 @@ namespace Repository.repository
             return model;
         }
 
-        public async Task<bool> Delete(Person model)
+        public async Task<bool> Delete(Guid id)
         {
             var entities = await this._database.GetPersonEnitites();
-            var obj = entities.FirstOrDefault(m => m.Id.Equals(model.Id));
+            var obj = entities.FirstOrDefault(m => m.Id.Equals(id));
             if (obj == null)
             {
                 throw new Exception("Registro não encontrado para remoção");

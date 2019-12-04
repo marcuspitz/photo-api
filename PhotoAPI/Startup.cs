@@ -1,22 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.bootstrapper;
+using Interface.utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace PhotoAPI
 {
     public class Startup
-    {
+    {        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,7 +21,8 @@ namespace PhotoAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Bootstrapper.Register(services);
+            Utils.TEMP_FILE_PATH = Configuration.GetSection("tempFilePath").Value;
+            Bootstrapper.Register(services);            
             services.AddControllers();
             services.AddSwaggerGen(c => {
 
@@ -43,6 +39,18 @@ namespace PhotoAPI
                         }
                     });
             });
+                
+
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                   );
+            });            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

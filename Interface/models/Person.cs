@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace Interface.models
 {
@@ -11,5 +10,6 @@ namespace Interface.models
         public string LastName { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
+        public string PicturePath { get; set; }
     }
 }

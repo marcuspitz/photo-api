@@ -10,12 +10,13 @@ using Repository.repository;
 using Service.person;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Application.bootstrapper
 {
     public static class Bootstrapper
-    {
+    {        
         public static void Register(IServiceCollection service)
         {
             #region Mapper           
@@ -48,7 +49,7 @@ namespace Application.bootstrapper
 
         private static void ViewModelToModel(IMapperConfigurationExpression mapper)
         {            
-            mapper.CreateMap<PersonViewModel, Person>();            
+            mapper.CreateMap<PersonViewModel, Person>();           
         }
 
         private static void ModelToViewModel(IMapperConfigurationExpression mapper)

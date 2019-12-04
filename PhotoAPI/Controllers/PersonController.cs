@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Interface.services;
 using Interface.viewmodels;
@@ -30,18 +31,18 @@ namespace PhotoAPI.Controllers
         }
 
         [HttpGet("Get")]
-        public async Task<IActionResult> Get(Guid Id)
+        public async Task<IActionResult> Get(Guid id)
         {
             return Ok(new
             {
                 success = true,
-                data = await this._service.GetById(Id)
+                data = await this._service.GetById(id)
             }
             );
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromBody]PersonViewModel model)
+        public async Task<IActionResult> Add([FromForm]PersonRequestViewModel model)
         {
             var vModel = await this._service.Add(model);
             if (vModel != null)
@@ -60,7 +61,7 @@ namespace PhotoAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> Update([FromBody]PersonViewModel model)
+        public async Task<IActionResult> Update([FromForm]PersonRequestViewModel model)
         {
             var vModel = await this._service.Update(model);
             if (vModel != null)
@@ -79,14 +80,29 @@ namespace PhotoAPI.Controllers
         }
 
         [HttpDelete("Remove")]
-        public async Task<IActionResult> Remove([FromBody]PersonViewModel model)
+        public async Task<IActionResult> Remove(Guid id)
         {
             return Ok(new
             {
-                success = await _service.Remove(model),
-                data = model
+                success = await _service.Remove(id)
             }
             );
         }
+
+        [HttpGet("DownloadPicture")]
+        public async Task<IActionResult> DownloadPicture(Guid id)
+        {
+            var picture = await this._service.GetPictureById(id);
+            if (picture != null)
+            {
+                return File(picture, "application/octet-stream", picture.Name);
+            }
+            return Ok(new
+            {
+                success = false
+            }
+            );
+        }
+
     }
 }

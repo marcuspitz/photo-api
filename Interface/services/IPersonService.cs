@@ -1,6 +1,7 @@
 ﻿using Interface.viewmodels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Interface.services
@@ -8,9 +9,10 @@ namespace Interface.services
     public interface IPersonService
     {
         Task<PersonViewModel> GetById(Guid id);
+        Task<FileStream> GetPictureById(Guid id);
         Task<IEnumerable<PersonViewModel>> GetAll();
-        Task<PersonViewModel> Add(PersonViewModel model);
-        Task<PersonViewModel> Update(PersonViewModel model);
-        Task<bool> Remove(PersonViewModel model);
+        Task<PersonViewModel> Add(PersonRequestViewModel model);
+        Task<PersonViewModel> Update(PersonRequestViewModel model);
+        Task<bool> Remove(Guid id);
     }
 }
